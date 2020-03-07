@@ -34,12 +34,12 @@
 ## Workflow
 
 All work is done in Docker containers created by Developers. Containers are defined in GitHub repositories, built
-with [Drone CI](https://drone.prod.init.ak8s.mckinsey.com) either per commit, per branch or by git tag, and kept in Firm-Wide [registry](registry.mckinsey.com).
+with [Drone CI](https://drone.prod.init.ak8s.mckinsey.com) either per commit, per branch or by git tag, and kept in `registry.mckinsey.com`.
 
 To orchestrate container execution [Argo Workflow](https://github.com/argoproj/argo/blob/master/examples/README.md) is used. Workflows
 are executed by Kubernetes in specified namespace. Namespace is provisioned by Cluster administrator either by Rancher UI, or with
-kubectl cli: `kubectl create namespace insights`. Once namespace is created its secrets are accessible in [Vault](https://vault.prod.init.ak8s.mckinsey.com/ui/), access to Vault is managed by [Okta group](https://fia-portal.intranet.mckinsey.com)
-membership.
+kubectl cli: `kubectl create namespace insights`. Once namespace is created its secrets are accessible in [Vault](https://vault.prod.init.ak8s.mckinsey.com/ui/),
+access to Vault is managed by [Okta group](https://fia-portal.intranet.mckinsey.com) membership.
 
 ## HowTo
 
