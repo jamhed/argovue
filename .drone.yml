@@ -1,0 +1,16 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: fetch
+    image: docker:git
+    commands:
+      - git fetch --tags
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: registry.mckinsey.com/infosec/argovue
+      auto_tag: true
+      build_args_from_env: [DRONE_TAG, DRONE_COMMIT, DRONE_BUILD_STARTED, DRONE_REPO_OWNER]
+    when:
+      event: tag
