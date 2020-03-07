@@ -1,0 +1,21 @@
+apiVersion: argovue.io/v1
+kind: Service
+metadata:
+  name: notebook
+  labels:
+    oidc.argovue.io/group: authors
+spec:
+  input:
+  - name: env1
+    caption: Variable one
+  - name: env2
+    caption: Variable two
+  helmRelease:
+    chart:
+      repository: https://jamhed.github.io/charts
+      name: simple
+      version: 0.1.5
+    values:
+      image: jamhed/notebook:0.1.6
+      port: 8888
+      privateVolumeSize: 1M

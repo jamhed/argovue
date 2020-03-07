@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: dag
+  labels:
+    oidc.argovue.io/group: authors
+spec:
+  entrypoint: dag
+  volumeClaimTemplates:
+  - metadata:
+      name: work
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Mi
+  templates:
+  - name: alpine
+    retryStrategy:
+      limit: 1
+    inputs:
+      parameters:
+      - name: script
+    metadata:
+      labels:
+        oidc.argovue.io/group: authors
+    container:
+      image: alpine
+      command: [sh, -c]
+      args: ["{{inputs.parameters.script}}"]
+      volumeMounts:
+      - name: work
+        mountPath: /work
+  - name: dag
+    dag:
+      tasks:
+      - name: a
+        template: alpine
+        arguments:
+          parameters: [{name: script, value: "touch /work/a ; sleep 10; echo a"}]
+      - name: b
+        template: alpine
+        arguments:
+          parameters: [{name: script, value: "for i in $(seq 1 100); do echo b$i; sleep 5; done"}]
+      - name: c
+        template: alpine
+        dependencies: [a, b]
+        arguments:
+          parameters: [{name: script, value: "touch /work/c ; sleep 10; echo c"}]
