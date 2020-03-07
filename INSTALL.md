@@ -26,18 +26,10 @@ See their [install](https://github.com/fluxcd/helm-operator/blob/master/chart/he
 
 Provide values (ingress hosts, tls, oidc provider/dex config), see [values.yaml](https://raw.githubusercontent.com/jamhed/charts/master/argovue/values.yaml)
 
-Install ArgoVue CRDs:
-
-```
-kubectl apply -f https://raw.githubusercontent.com/jamhed/argovue/master/kube/catalogue.yaml
-kubectl apply -f https://raw.githubusercontent.com/jamhed/argovue/master/kube/config.yaml
-```
-
 Install ArgoVue Helm Chart:
 
 ```
 helm repo add jamhed https://jamhed.github.io/charts/
-kubectl create namespace fluxcd
 helm update -i -f values.yaml --namespace argovue argovue argovue
 ```
 
