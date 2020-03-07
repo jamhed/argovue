@@ -1,6 +1,6 @@
 # ArgoVue
 
-This is work in progress, check [TODO](TODO.md), also please consult [INSTALL](INSTALL.md) and [DEVEL](DEVEL.md) files.
+This is work in progress, check [TODO](TODO.md), also please consult [INSTALL](INSTALL.md) and [USAGE](USAGE.md) files.
 
 ## Motivation
 
