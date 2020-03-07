@@ -8,6 +8,8 @@
 * On connection break give it some time (10-15 seconds) before clean up
 * Better kube error/info handling on service create/delete (with rollback?)
 
+* Per namespace authenticating proxy
+
 * Extend parent view for DAG if size is greater
 * Delete brokers on zero connections after timeout
 * Add workflow templates and their actions?

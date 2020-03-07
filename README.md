@@ -9,12 +9,13 @@ and expose services uniformly with authenticating reverse proxy.
 
 ## Use case
 
-Provide per project (namespace) UI to run and manage argo workflows and expose pre-defined services with uniform access management.
+Provide UI to run and manage argo workflows and expose pre-defined services with uniform access management.
 
-## Pre-requisites
+## Dependencies
 
-OIDC server is required for the application to work. It could be either external OIDC provider (Okta, Auth0), or included
-dex.
+OIDC server is required for the application to work. It could be either external OIDC provider (Okta, Auth0) or Dex.
+
+[Argo Workflows](https://github.com/argoproj/argo) and [Flux Helm operator](https://github.com/fluxcd/helm-operator).
 
 ## Usage
 
