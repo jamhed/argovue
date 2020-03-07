@@ -1,0 +1,16 @@
+package constant
+
+const IdLabel = "oidc.argovue.io/id"
+const GroupLabel = "oidc.argovue.io/group"
+const OwnerLabel = "oidc.argovue.io/owner"
+const InstanceId = "instance.argovue.io/id"
+const ServiceLabel = "service.argovue.io/name"
+const ServiceNamespaceLabel = "service.argovue.io/namespace"
+const PvcLabel = "pvc.argovue.io/name"
+const PvcId = "pvc.argovue.io/id"
+const WorkflowLabel = "workflows.argoproj.io/workflow"
+const IngressId = "ingress.argovue.io/id"
+const TokenId = "token.argovue.io/id"
+const DatasetId = "dataset.argovue.io/id"
+const JobId = "job.argovue.io/id"
+const DatasetLabel = "dataset.argovue.io/name"

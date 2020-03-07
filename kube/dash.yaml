@@ -1,0 +1,22 @@
+apiVersion: argovue.io/v1
+kind: Service
+metadata:
+  name: dash
+  labels:
+    oidc.argovue.io/group: authors
+spec:
+  input:
+  - name: env1
+    caption: Variable one
+    default: envone
+  - name: env2
+    caption: Variable two
+  helmRelease:
+    chart:
+      repository: https://jamhed.github.io/charts
+      name: simple
+      version: 0.1.5
+    values:
+      image: jamhed/dash:0.1.1
+      port: 8000
+      privateVolumeSize: 1M

@@ -1,0 +1,10 @@
+/argovue
+/src/argovue
+/skaffold/argovue
+/skaffold/ui
+/skaffold/k8s-deploy.yaml.real
+argovue.sublime-project
+argovue.sublime-workspace
+/src/gin-bin
+/src/.env
+/go
