@@ -55,8 +55,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	// Group=argovue.io, Version=v1
 	case v1.SchemeGroupVersion.WithResource("appconfigs"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Argovue().V1().AppConfigs().Informer()}, nil
-	case v1.SchemeGroupVersion.WithResource("datasets"):
-		return &genericInformer{resource: resource.GroupResource(), informer: f.Argovue().V1().Datasets().Informer()}, nil
+	case v1.SchemeGroupVersion.WithResource("datasources"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Argovue().V1().Datasources().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("services"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Argovue().V1().Services().Informer()}, nil
 	case v1.SchemeGroupVersion.WithResource("tokens"):

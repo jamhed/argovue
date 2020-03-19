@@ -27,8 +27,8 @@ func GetByKind(kind, namespace, name string) (crd *Crd, err error) {
 		crd = New("argovue.io", "v1", "tokens")
 	case "ingress":
 		crd = New("extensions", "v1beta1", "ingresses")
-	case "dataset":
-		crd = New("argovue.io", "v1", "datasets")
+	case "datasource":
+		crd = New("argovue.io", "v1", "datasources")
 	case "helmrelease":
 		crd = New("helm.fluxcd.io", "v1", "helmreleases")
 	default:
@@ -78,16 +78,16 @@ func ServiceTokens(namespace, name string) *Crd {
 		SetLabelSelector("service.argovue.io/name=" + name)
 }
 
-func PvcDatasets(namespace, name string) *Crd {
-	return New("argovue.io", "v1", "datasets").
+func PvcDatasources(namespace, name string) *Crd {
+	return New("argovue.io", "v1", "datasources").
 		SetFieldSelector("metadata.namespace=" + namespace).
 		SetLabelSelector("pvc.argovue.io/name=" + name)
 }
 
-func DatasetPvcs(namespace, name string) *Crd {
+func DatasourcePvcs(namespace, name string) *Crd {
 	return New("", "v1", "persistentvolumeclaims").
 		SetFieldSelector("metadata.namespace=" + namespace).
-		SetLabelSelector(constant.DatasetLabel + "=" + name)
+		SetLabelSelector(constant.DatasourceLabel + "=" + name)
 }
 
 func PvcMounts(namespace, name string) *Crd {
@@ -96,10 +96,10 @@ func PvcMounts(namespace, name string) *Crd {
 		SetLabelSelector("pvc.argovue.io/name=" + name)
 }
 
-func DatasetUploads(namespace, name string) *Crd {
+func DatasourceUploads(namespace, name string) *Crd {
 	return New("batch", "v1", "jobs").
 		SetFieldSelector("metadata.namespace=" + namespace).
-		SetLabelSelector("dataset.argovue.io/name=" + name)
+		SetLabelSelector("datasource.argovue.io/name=" + name)
 }
 
 func JobPods(namespace, name string) *Crd {

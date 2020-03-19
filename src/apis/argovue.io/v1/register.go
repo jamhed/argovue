@@ -40,8 +40,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&AppConfigList{},
 		&Token{},
 		&TokenList{},
-		&Dataset{},
-		&DatasetList{},
+		&Datasource{},
+		&DatasourceList{},
 	)
 
 	scheme.AddKnownTypes(

@@ -31,15 +31,15 @@ export default {
   },
   methods: {
     create: async function () {
-      let re = await this.$api.post(`/k8s/dataset/${this.namespace}/${this.name}/syncs/create`)
+      let re = await this.$api.post(`/k8s/datasource/${this.namespace}/${this.name}/syncs/create`)
       this.showReply(re)
     },
     del: async function (name) {
-      let re = await this.$api.post(`/k8s/dataset/${this.namespace}/${this.name}/sync/${name}/delete`)
+      let re = await this.$api.post(`/k8s/datasource/${this.namespace}/${this.name}/sync/${name}/delete`)
       this.showReply(re)
     },
     uri() {
-      return `/k8s/dataset/${this.namespace}/${this.name}/syncs`
+      return `/k8s/datasource/${this.namespace}/${this.name}/syncs`
     },
   },
 }

@@ -41,7 +41,7 @@ func (a *App) onLogout(sessionId string) {
 func (a *App) onLogin(sessionId string, p *profile.Profile) {
 	brokerDefs := []BrokerDef{
 		{"catalogue", "argovue.io", "v1", "services"},
-		{"datasets", "argovue.io", "v1", "datasets"},
+		{"datasources", "argovue.io", "v1", "datasources"},
 		{"pvcs", "", "v1", "persistentvolumeclaims"},
 		{"workflows", "argoproj.io", "v1alpha1", "workflows"},
 		{"services", "", "v1", "services"},

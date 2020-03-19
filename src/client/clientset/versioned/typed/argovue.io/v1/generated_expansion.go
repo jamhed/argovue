@@ -20,7 +20,7 @@ package v1
 
 type AppConfigExpansion interface{}
 
-type DatasetExpansion interface{}
+type DatasourceExpansion interface{}
 
 type ServiceExpansion interface{}
 

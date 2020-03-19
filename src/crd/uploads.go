@@ -13,28 +13,28 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func SyncDatasetPvc(dataset *argovuev1.Dataset, pvc *v1.PersistentVolumeClaim, label, owner string, params args.RcloneParams) error {
-	id := GetIdFromAnnotations("dataset", dataset.Namespace, dataset.Name, constant.JobId)
+func SyncDatasourcePvc(datasource *argovuev1.Datasource, pvc *v1.PersistentVolumeClaim, label, owner string, params args.RcloneParams) error {
+	id := GetIdFromAnnotations("datasource", datasource.Namespace, datasource.Name, constant.JobId)
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:        fmt.Sprintf("sync-ds-pvc-%s-%s", dataset.Name, id),
-			Namespace:   dataset.Namespace,
+			Name:        fmt.Sprintf("sync-ds-pvc-%s-%s", datasource.Name, id),
+			Namespace:   datasource.Namespace,
 			Annotations: map[string]string{constant.OwnerLabel: owner},
 			Labels: map[string]string{
-				constant.DatasetLabel: dataset.Name,
-				label:                 profile.MaybeHash(label, owner),
+				constant.DatasourceLabel: datasource.Name,
+				label:                    profile.MaybeHash(label, owner),
 			},
-			OwnerReferences: []metav1.OwnerReference{{APIVersion: "argovue.io/v1", Kind: "Dataset", Name: dataset.Name, UID: dataset.UID}},
+			OwnerReferences: []metav1.OwnerReference{{APIVersion: "argovue.io/v1", Kind: "Datasource", Name: datasource.Name, UID: datasource.UID}},
 		},
 		Spec: batchv1.JobSpec{
 			Template: v1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:        fmt.Sprintf("%s-%s", dataset.Name, id),
-					Namespace:   dataset.Namespace,
+					Name:        fmt.Sprintf("%s-%s", datasource.Name, id),
+					Namespace:   datasource.Namespace,
 					Annotations: map[string]string{constant.OwnerLabel: owner},
 					Labels: map[string]string{
-						constant.DatasetLabel: dataset.Name,
-						label:                 profile.MaybeHash(label, owner),
+						constant.DatasourceLabel: datasource.Name,
+						label:                    profile.MaybeHash(label, owner),
 					},
 				},
 				Spec: v1.PodSpec{
@@ -42,7 +42,7 @@ func SyncDatasetPvc(dataset *argovuev1.Dataset, pvc *v1.PersistentVolumeClaim, l
 					Containers: []v1.Container{{
 						Name:    "rclone",
 						Image:   params.Image,
-						Command: []string{"rclone", "-v", "sync", "S3:" + params.Bucket + "/" + dataset.Spec.Location, "/pvc"},
+						Command: []string{"rclone", "-v", "sync", "S3:" + params.Bucket + "/" + datasource.Spec.Location, "/pvc"},
 						Env: []v1.EnvVar{
 							{Name: "RCLONE_CONFIG_S3_ENDPOINT", Value: params.Endpoint},
 							{Name: "RCLONE_CONFIG_S3_REGION", Value: params.Region},
@@ -68,32 +68,32 @@ func SyncDatasetPvc(dataset *argovuev1.Dataset, pvc *v1.PersistentVolumeClaim, l
 	if err != nil {
 		return err
 	}
-	_, err = clientset.BatchV1().Jobs(dataset.Namespace).Create(job)
+	_, err = clientset.BatchV1().Jobs(datasource.Namespace).Create(job)
 	return err
 }
 
-func SyncPvcDataset(dataset *argovuev1.Dataset, label, owner string, params args.RcloneParams) error {
-	id := GetIdFromAnnotations("dataset", dataset.Namespace, dataset.Name, constant.JobId)
+func SyncPvcDatasource(datasource *argovuev1.Datasource, label, owner string, params args.RcloneParams) error {
+	id := GetIdFromAnnotations("datasource", datasource.Namespace, datasource.Name, constant.JobId)
 	job := &batchv1.Job{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:        fmt.Sprintf("sync-pvc-ds-%s-%s", dataset.Name, id),
-			Namespace:   dataset.Namespace,
+			Name:        fmt.Sprintf("sync-pvc-ds-%s-%s", datasource.Name, id),
+			Namespace:   datasource.Namespace,
 			Annotations: map[string]string{constant.OwnerLabel: owner},
 			Labels: map[string]string{
-				constant.DatasetLabel: dataset.Name,
-				label:                 profile.MaybeHash(label, owner),
+				constant.DatasourceLabel: datasource.Name,
+				label:                    profile.MaybeHash(label, owner),
 			},
-			OwnerReferences: []metav1.OwnerReference{{APIVersion: "argovue.io/v1", Kind: "Dataset", Name: dataset.Name, UID: dataset.UID}},
+			OwnerReferences: []metav1.OwnerReference{{APIVersion: "argovue.io/v1", Kind: "Datasource", Name: datasource.Name, UID: datasource.UID}},
 		},
 		Spec: batchv1.JobSpec{
 			Template: v1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:        fmt.Sprintf("%s-%s", dataset.Name, id),
-					Namespace:   dataset.Namespace,
+					Name:        fmt.Sprintf("%s-%s", datasource.Name, id),
+					Namespace:   datasource.Namespace,
 					Annotations: map[string]string{constant.OwnerLabel: owner},
 					Labels: map[string]string{
-						constant.DatasetLabel: dataset.Name,
-						label:                 profile.MaybeHash(label, owner),
+						constant.DatasourceLabel: datasource.Name,
+						label:                    profile.MaybeHash(label, owner),
 					},
 				},
 				Spec: v1.PodSpec{
@@ -101,7 +101,7 @@ func SyncPvcDataset(dataset *argovuev1.Dataset, label, owner string, params args
 					Containers: []v1.Container{{
 						Name:    "rclone",
 						Image:   params.Image,
-						Command: []string{"rclone", "-v", "sync", "/pvc", "S3:" + params.Bucket + "/" + dataset.Spec.Location},
+						Command: []string{"rclone", "-v", "sync", "/pvc", "S3:" + params.Bucket + "/" + datasource.Spec.Location},
 						Env: []v1.EnvVar{
 							{Name: "RCLONE_CONFIG_S3_ENDPOINT", Value: params.Endpoint},
 							{Name: "RCLONE_CONFIG_S3_REGION", Value: params.Region},
@@ -115,7 +115,7 @@ func SyncPvcDataset(dataset *argovuev1.Dataset, label, owner string, params args
 					Volumes: []v1.Volume{{
 						Name: "pvc",
 						VolumeSource: v1.VolumeSource{PersistentVolumeClaim: &v1.PersistentVolumeClaimVolumeSource{
-							ClaimName: dataset.Spec.Source,
+							ClaimName: datasource.Spec.Source,
 							ReadOnly:  true,
 						}},
 					}},
@@ -127,11 +127,11 @@ func SyncPvcDataset(dataset *argovuev1.Dataset, label, owner string, params args
 	if err != nil {
 		return err
 	}
-	_, err = clientset.BatchV1().Jobs(dataset.Namespace).Create(job)
+	_, err = clientset.BatchV1().Jobs(datasource.Namespace).Create(job)
 	return err
 }
 
-func DeleteDatasetSync(namespace, name string) error {
+func DeleteDatasourceSync(namespace, name string) error {
 	clientset, err := kube.GetClient()
 	if err != nil {
 		return err

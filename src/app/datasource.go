@@ -11,9 +11,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (a *App) controlPvcDatasets(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) controlPvcDatasources(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
-	name, namespace, dataset, action := v["name"], v["namespace"], v["dataset"], v["action"]
+	name, namespace, datasource, action := v["name"], v["namespace"], v["datasource"], v["action"]
 	if err := authObj("pvc", name, namespace, p); err != nil {
 		return err
 	}
@@ -24,12 +24,12 @@ func (a *App) controlPvcDatasets(p *profile.Profile, w http.ResponseWriter, r *h
 		if err != nil {
 			return makeStringError(err)
 		}
-		err = crd.CreatePvcDataset(pvc, constant.IdLabel, p.Id)
+		err = crd.CreatePvcDatasource(pvc, constant.IdLabel, p.Id)
 		if err != nil {
 			return makeStringError(err)
 		}
 	case "delete":
-		err = crd.DeletePvcDataset(namespace, dataset)
+		err = crd.DeletePvcDatasource(namespace, datasource)
 		if err != nil {
 			return makeStringError(err)
 		}
@@ -37,34 +37,34 @@ func (a *App) controlPvcDatasets(p *profile.Profile, w http.ResponseWriter, r *h
 	return nil
 }
 
-func (a *App) watchPvcDatasets(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) watchPvcDatasources(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
 	name, namespace := v["name"], v["namespace"]
 	if err := authObj("pvc", name, namespace, p); err != nil {
 		return err
 	}
-	return a.maybeNewSubsetBroker(sid, crd.PvcDatasets(namespace, name)).ServeHTTP(w, r)
+	return a.maybeNewSubsetBroker(sid, crd.PvcDatasources(namespace, name)).ServeHTTP(w, r)
 }
 
-func (a *App) controlDatasetPvcs(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) controlDatasourcePvcs(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
 	name, namespace, pvcName, action := v["name"], v["namespace"], v["pvc"], v["action"]
-	if err := authObj("dataset", name, namespace, p); err != nil {
+	if err := authObj("datasource", name, namespace, p); err != nil {
 		return err
 	}
 	var err error
 	switch action {
 	case "create":
-		ds, err := kube.GetDataset(name, namespace)
+		ds, err := kube.GetDatasource(name, namespace)
 		if err != nil {
 			return makeStringError(err)
 		}
-		err = crd.CreateDatasetPvc(ds, constant.IdLabel, p.Id)
+		err = crd.CreateDatasourcePvc(ds, constant.IdLabel, p.Id)
 		if err != nil {
 			return makeStringError(err)
 		}
 	case "sync":
-		ds, err := kube.GetDataset(name, namespace)
+		ds, err := kube.GetDatasource(name, namespace)
 		if err != nil {
 			return makeStringError(err)
 		}
@@ -86,12 +86,12 @@ func (a *App) controlDatasetPvcs(p *profile.Profile, w http.ResponseWriter, r *h
 		params.Key = credsValue.AccessKeyID
 		params.Secret = credsValue.SecretAccessKey
 		params.Session = credsValue.SessionToken
-		err = crd.SyncDatasetPvc(ds, pvc, constant.IdLabel, p.Id, params)
+		err = crd.SyncDatasourcePvc(ds, pvc, constant.IdLabel, p.Id, params)
 		if err != nil {
 			return makeStringError(err)
 		}
 	case "delete":
-		err = crd.DeleteDatasetPvc(namespace, pvcName)
+		err = crd.DeleteDatasourcePvc(namespace, pvcName)
 		if err != nil {
 			return makeStringError(err)
 		}
@@ -99,11 +99,11 @@ func (a *App) controlDatasetPvcs(p *profile.Profile, w http.ResponseWriter, r *h
 	return nil
 }
 
-func (a *App) watchDatasetPvcs(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) watchDatasourcePvcs(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
 	name, namespace := v["name"], v["namespace"]
-	if err := authObj("dataset", name, namespace, p); err != nil {
+	if err := authObj("datasource", name, namespace, p); err != nil {
 		return err
 	}
-	return a.maybeNewSubsetBroker(sid, crd.DatasetPvcs(namespace, name)).ServeHTTP(w, r)
+	return a.maybeNewSubsetBroker(sid, crd.DatasourcePvcs(namespace, name)).ServeHTTP(w, r)
 }

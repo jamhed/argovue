@@ -32,19 +32,19 @@ export default {
   },
   methods: {
     create: async function () {
-      let re = await this.$api.post(`/k8s/dataset/${this.namespace}/${this.name}/pvcs/create`)
+      let re = await this.$api.post(`/k8s/datasource/${this.namespace}/${this.name}/pvcs/create`)
       this.showReply(re)
     },
     del: async function (name) {
-      let re = await this.$api.post(`/k8s/dataset/${this.namespace}/${this.name}/pvc/${name}/delete`)
+      let re = await this.$api.post(`/k8s/datasource/${this.namespace}/${this.name}/pvc/${name}/delete`)
       this.showReply(re)
     },
     sync: async function (name) {
-      let re = await this.$api.post(`/k8s/dataset/${this.namespace}/${this.name}/pvc/${name}/sync`)
+      let re = await this.$api.post(`/k8s/datasource/${this.namespace}/${this.name}/pvc/${name}/sync`)
       this.showReply(re)
     },
     uri() {
-      return `/k8s/dataset/${this.namespace}/${this.name}/pvcs`
+      return `/k8s/datasource/${this.namespace}/${this.name}/pvcs`
     },
   },
 }

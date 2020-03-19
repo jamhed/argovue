@@ -21,6 +21,7 @@ package v1
 import (
 	versioned "argovue/client/clientset/versioned"
 	internalinterfaces "argovue/client/informers/externalversions/internalinterfaces"
+	"context"
 	time "time"
 
 	argovueiov1 "argovue/apis/argovue.io/v1"
@@ -61,13 +62,13 @@ func NewFilteredAppConfigInformer(client versioned.Interface, namespace string, 
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ArgovueV1().AppConfigs(namespace).List(options)
+				return client.ArgovueV1().AppConfigs(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ArgovueV1().AppConfigs(namespace).Watch(options)
+				return client.ArgovueV1().AppConfigs(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&argovueiov1.AppConfig{},

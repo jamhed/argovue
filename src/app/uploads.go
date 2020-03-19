@@ -11,39 +11,39 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func (a *App) controlDatasetSyncs(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) controlDatasourceSyncs(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
 	name, namespace, sync, action := v["name"], v["namespace"], v["sync"], v["action"]
-	if err := authObj("dataset", name, namespace, p); err != nil {
+	if err := authObj("datasource", name, namespace, p); err != nil {
 		return err
 	}
 	var err error
 	switch action {
 	case "create":
-		dataset, err := kube.GetDataset(name, namespace)
+		datasource, err := kube.GetDatasource(name, namespace)
 		if err != nil {
 			return makeStringError(err)
 		}
-		creds, err := a.Args().AWS().GetCreds(dataset.Spec.Location)
+		creds, err := a.Args().AWS().GetCreds(datasource.Spec.Location)
 		if err != nil {
-			log.Errorf("Error getting session credentials for path:%s, error:%s", dataset.Spec.Location, err)
+			log.Errorf("Error getting session credentials for path:%s, error:%s", datasource.Spec.Location, err)
 			return makeStringError(err)
 		}
 		credsValue, err := creds.Get()
 		if err != nil {
-			log.Errorf("Error decoding credentials for path:%s, error:%s", dataset.Spec.Location, err)
+			log.Errorf("Error decoding credentials for path:%s, error:%s", datasource.Spec.Location, err)
 			return makeStringError(err)
 		}
 		params := a.Args().RcloneParams()
 		params.Key = credsValue.AccessKeyID
 		params.Secret = credsValue.SecretAccessKey
 		params.Session = credsValue.SessionToken
-		err = crd.SyncPvcDataset(dataset, constant.IdLabel, p.Id, params)
+		err = crd.SyncPvcDatasource(datasource, constant.IdLabel, p.Id, params)
 		if err != nil {
 			return makeStringError(err)
 		}
 	case "delete":
-		err = crd.DeleteDatasetSync(namespace, sync)
+		err = crd.DeleteDatasourceSync(namespace, sync)
 		if err != nil {
 			return makeStringError(err)
 		}
@@ -51,13 +51,13 @@ func (a *App) controlDatasetSyncs(p *profile.Profile, w http.ResponseWriter, r *
 	return nil
 }
 
-func (a *App) watchDatasetSyncs(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
+func (a *App) watchDatasourceSyncs(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
 	name, namespace := v["name"], v["namespace"]
-	if err := authObj("dataset", name, namespace, p); err != nil {
+	if err := authObj("datasource", name, namespace, p); err != nil {
 		return err
 	}
-	return a.maybeNewSubsetBroker(sid, crd.DatasetUploads(namespace, name)).ServeHTTP(w, r)
+	return a.maybeNewSubsetBroker(sid, crd.DatasourceUploads(namespace, name)).ServeHTTP(w, r)
 }
 
 func (a *App) watchJobPods(sid string, p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {

@@ -28,7 +28,7 @@ import (
 type ArgovueV1Interface interface {
 	RESTClient() rest.Interface
 	AppConfigsGetter
-	DatasetsGetter
+	DatasourcesGetter
 	ServicesGetter
 	TokensGetter
 }
@@ -42,8 +42,8 @@ func (c *ArgovueV1Client) AppConfigs(namespace string) AppConfigInterface {
 	return newAppConfigs(c, namespace)
 }
 
-func (c *ArgovueV1Client) Datasets(namespace string) DatasetInterface {
-	return newDatasets(c, namespace)
+func (c *ArgovueV1Client) Datasources(namespace string) DatasourceInterface {
+	return newDatasources(c, namespace)
 }
 
 func (c *ArgovueV1Client) Services(namespace string) ServiceInterface {

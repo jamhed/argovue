@@ -29,8 +29,8 @@ func GetByKind(kind, name, namespace string) (metav1.Object, error) {
 		return GetWorkflow(name, namespace)
 	case "ingress":
 		return GetIngress(name, namespace)
-	case "dataset":
-		return GetDataset(name, namespace)
+	case "datasource":
+		return GetDatasource(name, namespace)
 	case "job":
 		return GetJob(name, namespace)
 	case "argovue":
@@ -50,12 +50,12 @@ func GetArgovueService(name, namespace string) (*argovuev1.Service, error) {
 	return clientset.ArgovueV1().Services(namespace).Get(name, metav1.GetOptions{})
 }
 
-func GetDataset(name, namespace string) (*argovuev1.Dataset, error) {
+func GetDatasource(name, namespace string) (*argovuev1.Datasource, error) {
 	clientset, err := GetV1Clientset()
 	if err != nil {
 		return nil, err
 	}
-	return clientset.ArgovueV1().Datasets(namespace).Get(name, metav1.GetOptions{})
+	return clientset.ArgovueV1().Datasources(namespace).Get(name, metav1.GetOptions{})
 }
 
 func GetJob(name, namespace string) (*batchv1.Job, error) {

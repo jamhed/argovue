@@ -32,8 +32,8 @@ func (c *FakeArgovueV1) AppConfigs(namespace string) v1.AppConfigInterface {
 	return &FakeAppConfigs{c, namespace}
 }
 
-func (c *FakeArgovueV1) Datasets(namespace string) v1.DatasetInterface {
-	return &FakeDatasets{c, namespace}
+func (c *FakeArgovueV1) Datasources(namespace string) v1.DatasourceInterface {
+	return &FakeDatasources{c, namespace}
 }
 
 func (c *FakeArgovueV1) Services(namespace string) v1.ServiceInterface {

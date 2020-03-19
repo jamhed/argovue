@@ -21,6 +21,7 @@ package v1
 import (
 	versioned "argovue/client/clientset/versioned"
 	internalinterfaces "argovue/client/informers/externalversions/internalinterfaces"
+	"context"
 	time "time"
 
 	argovueiov1 "argovue/apis/argovue.io/v1"
@@ -31,59 +32,59 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 )
 
-// DatasetInformer provides access to a shared informer and lister for
-// Datasets.
-type DatasetInformer interface {
+// DatasourceInformer provides access to a shared informer and lister for
+// Datasources.
+type DatasourceInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1.DatasetLister
+	Lister() v1.DatasourceLister
 }
 
-type datasetInformer struct {
+type datasourceInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewDatasetInformer constructs a new informer for Dataset type.
+// NewDatasourceInformer constructs a new informer for Datasource type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewDatasetInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredDatasetInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewDatasourceInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredDatasourceInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredDatasetInformer constructs a new informer for Dataset type.
+// NewFilteredDatasourceInformer constructs a new informer for Datasource type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredDatasetInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredDatasourceInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options metav1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ArgovueV1().Datasets(namespace).List(options)
+				return client.ArgovueV1().Datasources(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options metav1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.ArgovueV1().Datasets(namespace).Watch(options)
+				return client.ArgovueV1().Datasources(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&argovueiov1.Dataset{},
+		&argovueiov1.Datasource{},
 		resyncPeriod,
 		indexers,
 	)
 }
 
-func (f *datasetInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredDatasetInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *datasourceInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredDatasourceInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *datasetInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&argovueiov1.Dataset{}, f.defaultInformer)
+func (f *datasourceInformer) Informer() cache.SharedIndexInformer {
+	return f.factory.InformerFor(&argovueiov1.Datasource{}, f.defaultInformer)
 }
 
-func (f *datasetInformer) Lister() v1.DatasetLister {
-	return v1.NewDatasetLister(f.Informer().GetIndexer())
+func (f *datasourceInformer) Lister() v1.DatasourceLister {
+	return v1.NewDatasourceLister(f.Informer().GetIndexer())
 }

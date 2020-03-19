@@ -250,21 +250,21 @@ func (a *App) Serve() {
 	r.Handle("/k8s/service/{namespace}/{name}/ingresses/{action}", a.controlHandler(a.controlServiceIngresses))
 	r.Handle("/k8s/service/{namespace}/{name}/ingress/{ingress}/{action}", a.controlHandler(a.controlServiceIngresses))
 
-	r.Handle("/k8s/pvc/{namespace}/{name}/datasets", a.appHandler(a.watchPvcDatasets))
-	r.Handle("/k8s/pvc/{namespace}/{name}/datasets/{action}", a.controlHandler(a.controlPvcDatasets))
-	r.Handle("/k8s/pvc/{namespace}/{name}/dataset/{dataset}/{action}", a.controlHandler(a.controlPvcDatasets))
+	r.Handle("/k8s/pvc/{namespace}/{name}/datasources", a.appHandler(a.watchPvcDatasources))
+	r.Handle("/k8s/pvc/{namespace}/{name}/datasources/{action}", a.controlHandler(a.controlPvcDatasources))
+	r.Handle("/k8s/pvc/{namespace}/{name}/datasource/{datasource}/{action}", a.controlHandler(a.controlPvcDatasources))
 
 	r.Handle("/k8s/pvc/{namespace}/{name}/mounts", a.appHandler(a.watchPvcMounts))
 	r.Handle("/k8s/pvc/{namespace}/{name}/mounts/{action}", a.controlHandler(a.controlPvcMounts))
 	r.Handle("/k8s/pvc/{namespace}/{name}/mount/{service}/{action}", a.controlHandler(a.controlPvcMounts))
 
-	r.Handle("/k8s/dataset/{namespace}/{name}/syncs", a.appHandler(a.watchDatasetSyncs))
-	r.Handle("/k8s/dataset/{namespace}/{name}/syncs/{action}", a.controlHandler(a.controlDatasetSyncs))
-	r.Handle("/k8s/dataset/{namespace}/{name}/sync/{sync}/{action}", a.controlHandler(a.controlDatasetSyncs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/syncs", a.appHandler(a.watchDatasourceSyncs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/syncs/{action}", a.controlHandler(a.controlDatasourceSyncs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/sync/{sync}/{action}", a.controlHandler(a.controlDatasourceSyncs))
 
-	r.Handle("/k8s/dataset/{namespace}/{name}/pvcs", a.appHandler(a.watchDatasetPvcs))
-	r.Handle("/k8s/dataset/{namespace}/{name}/pvcs/{action}", a.controlHandler(a.controlDatasetPvcs))
-	r.Handle("/k8s/dataset/{namespace}/{name}/pvc/{pvc}/{action}", a.controlHandler(a.controlDatasetPvcs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/pvcs", a.appHandler(a.watchDatasourcePvcs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/pvcs/{action}", a.controlHandler(a.controlDatasourcePvcs))
+	r.Handle("/k8s/datasource/{namespace}/{name}/pvc/{pvc}/{action}", a.controlHandler(a.controlDatasourcePvcs))
 
 	r.Handle("/k8s/job/{namespace}/{name}/pods", a.appHandler(a.watchJobPods))
 

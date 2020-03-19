@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h1 class="h2">dataset/{{namespace}}/{{name}}</h1>
+      <h1 class="h2">datasource/{{namespace}}/{{name}}</h1>
     </div>
     <div>
       <b-card no-body v-if="loaded">
         <b-tabs card no-key-nav v-model="tab" @input="onTab">
-          <b-tab title="Dataset">
+          <b-tab title="Datasource">
             <b-row>
               <b-col>{{object.spec.location}}</b-col>
               <b-col class="text-right">{{object.metadata.creationTimestamp}}</b-col>
@@ -29,8 +29,8 @@
 
 <script>
 import SSE from '@/SSE/Object'
-import Sync from '@/Dataset/Sync'
-import PVCs from '@/Dataset/PVCs'
+import Sync from '@/Datasource/Sync'
+import PVCs from '@/Datasource/PVCs'
 import JsonEditor from '@/JsonEditor'
 
 export default {
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     uri() {
-      return `/k8s/dataset/${this.namespace}/${this.name}`
+      return `/k8s/datasource/${this.namespace}/${this.name}`
     }
   },
 }

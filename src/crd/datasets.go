@@ -13,9 +13,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func CreatePvcDataset(pvc *corev1.PersistentVolumeClaim, label, owner string) error {
-	id := GetIdFromAnnotations("pvc", pvc.Namespace, pvc.Name, constant.DatasetId)
-	dataset := &argovuev1.Dataset{
+func CreatePvcDatasource(pvc *corev1.PersistentVolumeClaim, label, owner string) error {
+	id := GetIdFromAnnotations("pvc", pvc.Namespace, pvc.Name, constant.DatasourceId)
+	datasource := &argovuev1.Datasource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      fmt.Sprintf("%s-%s", pvc.Name, id),
 			Namespace: pvc.Namespace,
@@ -27,7 +27,7 @@ func CreatePvcDataset(pvc *corev1.PersistentVolumeClaim, label, owner string) er
 				label:             profile.MaybeHash(label, owner),
 			},
 		},
-		Spec: argovuev1.DatasetSpec{
+		Spec: argovuev1.DatasourceSpec{
 			Location: uuid.New().String(),
 			Source:   pvc.Name,
 		},
@@ -36,32 +36,32 @@ func CreatePvcDataset(pvc *corev1.PersistentVolumeClaim, label, owner string) er
 	if err != nil {
 		return err
 	}
-	_, err = clientset.ArgovueV1().Datasets(pvc.Namespace).Create(dataset)
+	_, err = clientset.ArgovueV1().Datasources(pvc.Namespace).Create(datasource)
 	return err
 }
 
-func DeletePvcDataset(namespace, name string) error {
+func DeletePvcDatasource(namespace, name string) error {
 	clientset, err := kube.GetV1Clientset()
 	if err != nil {
 		return err
 	}
 	deletePolicy := metav1.DeletePropagationForeground
 	opts := &metav1.DeleteOptions{PropagationPolicy: &deletePolicy}
-	return clientset.ArgovueV1().Datasets(namespace).Delete(name, opts)
+	return clientset.ArgovueV1().Datasources(namespace).Delete(name, opts)
 }
 
-func CreateDatasetPvc(dataset *argovuev1.Dataset, label, owner string) error {
-	id := GetIdFromAnnotations("dataset", dataset.Namespace, dataset.Name, constant.PvcId)
+func CreateDatasourcePvc(datasource *argovuev1.Datasource, label, owner string) error {
+	id := GetIdFromAnnotations("datasource", datasource.Namespace, datasource.Name, constant.PvcId)
 	pvc := &corev1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("%s-%s", dataset.Name, id),
-			Namespace: dataset.Namespace,
+			Name:      fmt.Sprintf("%s-%s", datasource.Name, id),
+			Namespace: datasource.Namespace,
 			Annotations: map[string]string{
 				constant.OwnerLabel: owner,
 			},
 			Labels: map[string]string{
-				constant.DatasetLabel: dataset.Name,
-				label:                 profile.MaybeHash(label, owner),
+				constant.DatasourceLabel: datasource.Name,
+				label:                    profile.MaybeHash(label, owner),
 			},
 		},
 		Spec: corev1.PersistentVolumeClaimSpec{
@@ -77,7 +77,7 @@ func CreateDatasetPvc(dataset *argovuev1.Dataset, label, owner string) error {
 	return err
 }
 
-func DeleteDatasetPvc(namespace, name string) error {
+func DeleteDatasourcePvc(namespace, name string) error {
 	clientset, err := kube.GetClient()
 	if err != nil {
 		return err

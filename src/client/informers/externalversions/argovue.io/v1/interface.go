@@ -26,8 +26,8 @@ import (
 type Interface interface {
 	// AppConfigs returns a AppConfigInformer.
 	AppConfigs() AppConfigInformer
-	// Datasets returns a DatasetInformer.
-	Datasets() DatasetInformer
+	// Datasources returns a DatasourceInformer.
+	Datasources() DatasourceInformer
 	// Services returns a ServiceInformer.
 	Services() ServiceInformer
 	// Tokens returns a TokenInformer.
@@ -50,9 +50,9 @@ func (v *version) AppConfigs() AppConfigInformer {
 	return &appConfigInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
-// Datasets returns a DatasetInformer.
-func (v *version) Datasets() DatasetInformer {
-	return &datasetInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+// Datasources returns a DatasourceInformer.
+func (v *version) Datasources() DatasourceInformer {
+	return &datasourceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // Services returns a ServiceInformer.

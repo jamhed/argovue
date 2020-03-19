@@ -16,8 +16,8 @@ func ArgovueService() *Dynamic {
 	return new("argovue.io", "v1", "services")
 }
 
-func ArgovueDataset() *Dynamic {
-	return new("argovue.io", "v1", "datasets")
+func ArgovueDatasource() *Dynamic {
+	return new("argovue.io", "v1", "datasources")
 }
 
 func ArgoWorkflow() *Dynamic {
@@ -42,8 +42,8 @@ func ByKind(name, namespace string) dynamic.ResourceInterface {
 		return Service().Namespace(namespace)
 	case "pvc":
 		return Pvc().Namespace(namespace)
-	case "dataset":
-		return ArgovueDataset().Namespace(namespace)
+	case "datasource":
+		return ArgovueDatasource().Namespace(namespace)
 	}
 	return nil
 }

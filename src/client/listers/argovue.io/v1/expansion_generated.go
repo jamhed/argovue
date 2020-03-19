@@ -26,13 +26,13 @@ type AppConfigListerExpansion interface{}
 // AppConfigNamespaceLister.
 type AppConfigNamespaceListerExpansion interface{}
 
-// DatasetListerExpansion allows custom methods to be added to
-// DatasetLister.
-type DatasetListerExpansion interface{}
+// DatasourceListerExpansion allows custom methods to be added to
+// DatasourceLister.
+type DatasourceListerExpansion interface{}
 
-// DatasetNamespaceListerExpansion allows custom methods to be added to
-// DatasetNamespaceLister.
-type DatasetNamespaceListerExpansion interface{}
+// DatasourceNamespaceListerExpansion allows custom methods to be added to
+// DatasourceNamespaceLister.
+type DatasourceNamespaceListerExpansion interface{}
 
 // ServiceListerExpansion allows custom methods to be added to
 // ServiceLister.

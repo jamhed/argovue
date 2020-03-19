@@ -7,7 +7,7 @@
   </b-row>
   <b-row class="hover" v-for="obj in orderedCache" :key="obj.metadata.uid">
     <b-col cols=2>
-      <b-link :to="`/k8s/dataset/${obj.metadata.namespace}/${obj.metadata.name}`">{{ obj.metadata.name }}</b-link>
+      <b-link :to="`/k8s/datasource/${obj.metadata.namespace}/${obj.metadata.name}`">{{ obj.metadata.name }}</b-link>
     </b-col>
     <b-col>{{ obj.spec.location }}</b-col>
     <b-col class="text-right">{{ obj.metadata.creationTimestamp }}</b-col>
@@ -28,20 +28,20 @@ export default {
   extends: SSE,
   data() {
     return {
-      kind: "dataset",
+      kind: "datasource",
     }
   },
   methods: {
     create: async function () {
-      let re = await this.$api.post(`/k8s/pvc/${this.namespace}/${this.name}/datasets/create`)
+      let re = await this.$api.post(`/k8s/pvc/${this.namespace}/${this.name}/datasources/create`)
       this.showReply(re)
     },
     del: async function (name) {
-      let re = await this.$api.post(`/k8s/pvc/${this.namespace}/${this.name}/dataset/${name}/delete`)
+      let re = await this.$api.post(`/k8s/pvc/${this.namespace}/${this.name}/datasource/${name}/delete`)
       this.showReply(re)
     },
     uri() {
-      return `/k8s/pvc/${this.namespace}/${this.name}/datasets`
+      return `/k8s/pvc/${this.namespace}/${this.name}/datasources`
     },
   },
 }

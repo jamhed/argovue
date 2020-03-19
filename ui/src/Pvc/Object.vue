@@ -17,8 +17,8 @@
           <b-tab title="Mounts" lazy>
             <mounts :name="name" :namespace="namespace"></mounts>
           </b-tab>
-          <b-tab title="Dataset">
-            <dataset :namespace="namespace" :name="name"></dataset>
+          <b-tab title="Datasource">
+            <datasource :namespace="namespace" :name="name"></datasource>
           </b-tab>
           <b-tab title="Object">
             <jsoneditor :content="object"></jsoneditor>
@@ -32,7 +32,7 @@
 <script>
 import SSE from '@/SSE/Object'
 import JsonEditor from '@/JsonEditor'
-import Dataset from '@/Pvc/Dataset'
+import Datasource from '@/Pvc/Datasource'
 import Mounts from '@/Pvc/Mounts'
 
 export default {
@@ -40,7 +40,7 @@ export default {
   extends: SSE,
   components: {
     jsoneditor: JsonEditor,
-    dataset: Dataset,
+    datasource: Datasource,
     mounts: Mounts,
   },
   methods: {

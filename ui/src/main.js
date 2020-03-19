@@ -10,7 +10,7 @@ import App from '@/App'
 import Version from '@/Version'
 import Front from '@/Front'
 import Objects from '@/Objects'
-import Datasets from '@/Datasets'
+import Datasources from '@/Datasources'
 import Pvcs from '@/Pvcs'
 import Services from '@/Services'
 import WorkflowObject from '@/Workflow/Object'
@@ -21,7 +21,7 @@ import JobObject from '@/Job/Object'
 import ServiceObject from '@/Service/Object'
 import PvcObject from '@/Pvc/Object'
 import IngressObject from '@/Ingress/Object'
-import DatasetObject from '@/Dataset/Object'
+import DatasourceObject from '@/Datasource/Object'
 import Profile from '@/Profile'
 import API from '@/API'
 
@@ -45,7 +45,7 @@ const router = new VueRouter({
     { path: '/', component: Front },
     { path: '/version', component: Version },
     { path: '/profile', component: Profile },
-    { path: '/watch/datasets', component: Datasets, props: routeProps },
+    { path: '/watch/datasources', component: Datasources, props: routeProps },
     { path: '/watch/pvcs', component: Pvcs, props: routeProps },
     { path: '/watch/services', component: Services, props: routeProps },
     { path: '/watch/:kind', component: Objects, props: routeProps },
@@ -54,7 +54,7 @@ const router = new VueRouter({
     { path: '/k8s/pod/:namespace/:name', component: PodObject, props: routeProps },
     { path: '/k8s/persistentvolumeclaim/:namespace/:name', component: PvcObject, props: routeProps },
     { path: '/k8s/ingress/:namespace/:name', component: IngressObject, props: routeProps },
-    { path: '/k8s/dataset/:namespace/:name', component: DatasetObject, props: routeProps },
+    { path: '/k8s/datasource/:namespace/:name', component: DatasourceObject, props: routeProps },
     { path: '/k8s/service/:namespace/:name', component: ServiceObject, props: routeProps },
     { path: '/k8s/workflow/:namespace/:name', component: WorkflowObject, props: routeProps },
     { path: '/catalogue/:namespace/:name', component: CatalogueObject, props: routeProps },
