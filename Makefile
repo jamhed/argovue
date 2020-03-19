@@ -13,5 +13,5 @@ helm:
 	helm repo index docs --url https://jamhed.github.io/argovue/
 
 skaffold: argovue
-	cp src/argovue skaffold/argovue
+	cp src/argovue ../argovue-skaffold/argovue
 
