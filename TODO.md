@@ -1,9 +1,9 @@
 # TODO
 
 * Add health check
-* Garbage-collect ingresses (when a service is deleted)
-* Make ingresses group-owned
-* Add login/auth log entry to ease stats
+* Rename datasets to data sources
+* Allow to specify data source path in S3
+
 * Cluster role
 
 * On connection break give it some time (10-15 seconds) before clean up
@@ -17,6 +17,9 @@
 
 # DONE
 
+* Make ingresses group-owned
+* Add login/auth log entry to ease stats
+* Garbage-collect ingresses (when a service is deleted)
 * Instantiate datasets as pvc
 * Implement dataset sync
 * Persistent deployments (constant ingress/service names)
