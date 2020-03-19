@@ -83,13 +83,13 @@ func (a *App) proxyService(w http.ResponseWriter, r *http.Request) *appError {
 
 	// authenticate by token
 	if len(token) > 0 {
-		if a.authCache.Check(serviceKey(token, namespace, name)) {
-			banner = "token cache"
+		if v, ok := a.authCache.Check(serviceKey(token, namespace, name)); ok {
+			banner = v
 			goto auth
 		}
 		if authorizeToken(svc, token) {
-			a.authCache.Add(serviceKey(token, namespace, name))
-			banner = "token"
+			a.authCache.Add(serviceKey(token, namespace, name), token)
+			banner = token
 			goto auth
 		} else {
 			return makeError(http.StatusForbidden, "Proxy: %s/%s, no bearer auth, access denied", namespace, name)
@@ -101,8 +101,8 @@ func (a *App) proxyService(w http.ResponseWriter, r *http.Request) *appError {
 		return makeError(http.StatusInternalServerError, "Can't get session, error:%s", err)
 	}
 
-	if a.authCache.Check(serviceKey(session.ID, namespace, name)) {
-		banner = "session cache"
+	if v, ok := a.authCache.Check(serviceKey(session.ID, namespace, name)); ok {
+		banner = v
 		goto auth
 	}
 
@@ -111,7 +111,7 @@ func (a *App) proxyService(w http.ResponseWriter, r *http.Request) *appError {
 		if !pf.Authorize(svc) {
 			return makeError(http.StatusForbidden, "Proxy: %s/%s, no auth, access denied", namespace, name)
 		} else {
-			a.authCache.Add(serviceKey(session.ID, namespace, name))
+			a.authCache.Add(serviceKey(session.ID, namespace, name), pf.Id)
 			banner = pf.Id
 			goto auth
 		}

@@ -4,6 +4,7 @@ import "time"
 
 type Entry struct {
 	stamp time.Time
+	value string
 }
 
 type Cache struct {
@@ -16,13 +17,13 @@ func New() *Cache {
 	return c
 }
 
-func (c *Cache) Add(key string) {
-	c.cache[key] = Entry{time.Now()}
+func (c *Cache) Add(key, value string) {
+	c.cache[key] = Entry{time.Now(), value}
 }
 
-func (c *Cache) Check(key string) bool {
-	_, ok := c.cache[key]
-	return ok
+func (c *Cache) Check(key string) (string, bool) {
+	v, ok := c.cache[key]
+	return v.value, ok
 }
 
 func (c *Cache) cleanup() {
