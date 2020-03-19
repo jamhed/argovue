@@ -19,8 +19,6 @@ limitations under the License.
 package fake
 
 import (
-	"context"
-
 	argovueiov1 "argovue/apis/argovue.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -41,7 +39,7 @@ var datasourcesResource = schema.GroupVersionResource{Group: "argovue.io", Versi
 var datasourcesKind = schema.GroupVersionKind{Group: "argovue.io", Version: "v1", Kind: "Datasource"}
 
 // Get takes name of the datasource, and returns the corresponding datasource object, and an error if there is any.
-func (c *FakeDatasources) Get(ctx context.Context, name string, options v1.GetOptions) (result *argovueiov1.Datasource, err error) {
+func (c *FakeDatasources) Get(name string, options v1.GetOptions) (result *argovueiov1.Datasource, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(datasourcesResource, c.ns, name), &argovueiov1.Datasource{})
 
@@ -52,7 +50,7 @@ func (c *FakeDatasources) Get(ctx context.Context, name string, options v1.GetOp
 }
 
 // List takes label and field selectors, and returns the list of Datasources that match those selectors.
-func (c *FakeDatasources) List(ctx context.Context, opts v1.ListOptions) (result *argovueiov1.DatasourceList, err error) {
+func (c *FakeDatasources) List(opts v1.ListOptions) (result *argovueiov1.DatasourceList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(datasourcesResource, datasourcesKind, c.ns, opts), &argovueiov1.DatasourceList{})
 
@@ -74,14 +72,14 @@ func (c *FakeDatasources) List(ctx context.Context, opts v1.ListOptions) (result
 }
 
 // Watch returns a watch.Interface that watches the requested datasources.
-func (c *FakeDatasources) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeDatasources) Watch(opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(datasourcesResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a datasource and creates it.  Returns the server's representation of the datasource, and an error, if there is any.
-func (c *FakeDatasources) Create(ctx context.Context, datasource *argovueiov1.Datasource, opts v1.CreateOptions) (result *argovueiov1.Datasource, err error) {
+func (c *FakeDatasources) Create(datasource *argovueiov1.Datasource) (result *argovueiov1.Datasource, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(datasourcesResource, c.ns, datasource), &argovueiov1.Datasource{})
 
@@ -92,7 +90,7 @@ func (c *FakeDatasources) Create(ctx context.Context, datasource *argovueiov1.Da
 }
 
 // Update takes the representation of a datasource and updates it. Returns the server's representation of the datasource, and an error, if there is any.
-func (c *FakeDatasources) Update(ctx context.Context, datasource *argovueiov1.Datasource, opts v1.UpdateOptions) (result *argovueiov1.Datasource, err error) {
+func (c *FakeDatasources) Update(datasource *argovueiov1.Datasource) (result *argovueiov1.Datasource, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(datasourcesResource, c.ns, datasource), &argovueiov1.Datasource{})
 
@@ -103,7 +101,7 @@ func (c *FakeDatasources) Update(ctx context.Context, datasource *argovueiov1.Da
 }
 
 // Delete takes name of the datasource and deletes it. Returns an error if one occurs.
-func (c *FakeDatasources) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeDatasources) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(datasourcesResource, c.ns, name), &argovueiov1.Datasource{})
 
@@ -111,15 +109,15 @@ func (c *FakeDatasources) Delete(ctx context.Context, name string, opts v1.Delet
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeDatasources) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(datasourcesResource, c.ns, listOpts)
+func (c *FakeDatasources) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(datasourcesResource, c.ns, listOptions)
 
 	_, err := c.Fake.Invokes(action, &argovueiov1.DatasourceList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched datasource.
-func (c *FakeDatasources) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *argovueiov1.Datasource, err error) {
+func (c *FakeDatasources) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *argovueiov1.Datasource, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(datasourcesResource, c.ns, name, pt, data, subresources...), &argovueiov1.Datasource{})
 

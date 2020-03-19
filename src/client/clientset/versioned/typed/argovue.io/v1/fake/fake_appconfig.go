@@ -19,8 +19,6 @@ limitations under the License.
 package fake
 
 import (
-	"context"
-
 	argovueiov1 "argovue/apis/argovue.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -41,7 +39,7 @@ var appconfigsResource = schema.GroupVersionResource{Group: "argovue.io", Versio
 var appconfigsKind = schema.GroupVersionKind{Group: "argovue.io", Version: "v1", Kind: "AppConfig"}
 
 // Get takes name of the appConfig, and returns the corresponding appConfig object, and an error if there is any.
-func (c *FakeAppConfigs) Get(ctx context.Context, name string, options v1.GetOptions) (result *argovueiov1.AppConfig, err error) {
+func (c *FakeAppConfigs) Get(name string, options v1.GetOptions) (result *argovueiov1.AppConfig, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(appconfigsResource, c.ns, name), &argovueiov1.AppConfig{})
 
@@ -52,7 +50,7 @@ func (c *FakeAppConfigs) Get(ctx context.Context, name string, options v1.GetOpt
 }
 
 // List takes label and field selectors, and returns the list of AppConfigs that match those selectors.
-func (c *FakeAppConfigs) List(ctx context.Context, opts v1.ListOptions) (result *argovueiov1.AppConfigList, err error) {
+func (c *FakeAppConfigs) List(opts v1.ListOptions) (result *argovueiov1.AppConfigList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(appconfigsResource, appconfigsKind, c.ns, opts), &argovueiov1.AppConfigList{})
 
@@ -74,14 +72,14 @@ func (c *FakeAppConfigs) List(ctx context.Context, opts v1.ListOptions) (result 
 }
 
 // Watch returns a watch.Interface that watches the requested appConfigs.
-func (c *FakeAppConfigs) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeAppConfigs) Watch(opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(appconfigsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a appConfig and creates it.  Returns the server's representation of the appConfig, and an error, if there is any.
-func (c *FakeAppConfigs) Create(ctx context.Context, appConfig *argovueiov1.AppConfig, opts v1.CreateOptions) (result *argovueiov1.AppConfig, err error) {
+func (c *FakeAppConfigs) Create(appConfig *argovueiov1.AppConfig) (result *argovueiov1.AppConfig, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(appconfigsResource, c.ns, appConfig), &argovueiov1.AppConfig{})
 
@@ -92,7 +90,7 @@ func (c *FakeAppConfigs) Create(ctx context.Context, appConfig *argovueiov1.AppC
 }
 
 // Update takes the representation of a appConfig and updates it. Returns the server's representation of the appConfig, and an error, if there is any.
-func (c *FakeAppConfigs) Update(ctx context.Context, appConfig *argovueiov1.AppConfig, opts v1.UpdateOptions) (result *argovueiov1.AppConfig, err error) {
+func (c *FakeAppConfigs) Update(appConfig *argovueiov1.AppConfig) (result *argovueiov1.AppConfig, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(appconfigsResource, c.ns, appConfig), &argovueiov1.AppConfig{})
 
@@ -103,7 +101,7 @@ func (c *FakeAppConfigs) Update(ctx context.Context, appConfig *argovueiov1.AppC
 }
 
 // Delete takes name of the appConfig and deletes it. Returns an error if one occurs.
-func (c *FakeAppConfigs) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeAppConfigs) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(appconfigsResource, c.ns, name), &argovueiov1.AppConfig{})
 
@@ -111,15 +109,15 @@ func (c *FakeAppConfigs) Delete(ctx context.Context, name string, opts v1.Delete
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeAppConfigs) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(appconfigsResource, c.ns, listOpts)
+func (c *FakeAppConfigs) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(appconfigsResource, c.ns, listOptions)
 
 	_, err := c.Fake.Invokes(action, &argovueiov1.AppConfigList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched appConfig.
-func (c *FakeAppConfigs) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *argovueiov1.AppConfig, err error) {
+func (c *FakeAppConfigs) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *argovueiov1.AppConfig, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(appconfigsResource, c.ns, name, pt, data, subresources...), &argovueiov1.AppConfig{})
 

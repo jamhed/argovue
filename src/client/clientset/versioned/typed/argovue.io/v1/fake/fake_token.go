@@ -19,8 +19,6 @@ limitations under the License.
 package fake
 
 import (
-	"context"
-
 	argovueiov1 "argovue/apis/argovue.io/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -41,7 +39,7 @@ var tokensResource = schema.GroupVersionResource{Group: "argovue.io", Version: "
 var tokensKind = schema.GroupVersionKind{Group: "argovue.io", Version: "v1", Kind: "Token"}
 
 // Get takes name of the token, and returns the corresponding token object, and an error if there is any.
-func (c *FakeTokens) Get(ctx context.Context, name string, options v1.GetOptions) (result *argovueiov1.Token, err error) {
+func (c *FakeTokens) Get(name string, options v1.GetOptions) (result *argovueiov1.Token, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewGetAction(tokensResource, c.ns, name), &argovueiov1.Token{})
 
@@ -52,7 +50,7 @@ func (c *FakeTokens) Get(ctx context.Context, name string, options v1.GetOptions
 }
 
 // List takes label and field selectors, and returns the list of Tokens that match those selectors.
-func (c *FakeTokens) List(ctx context.Context, opts v1.ListOptions) (result *argovueiov1.TokenList, err error) {
+func (c *FakeTokens) List(opts v1.ListOptions) (result *argovueiov1.TokenList, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewListAction(tokensResource, tokensKind, c.ns, opts), &argovueiov1.TokenList{})
 
@@ -74,14 +72,14 @@ func (c *FakeTokens) List(ctx context.Context, opts v1.ListOptions) (result *arg
 }
 
 // Watch returns a watch.Interface that watches the requested tokens.
-func (c *FakeTokens) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+func (c *FakeTokens) Watch(opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(tokensResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a token and creates it.  Returns the server's representation of the token, and an error, if there is any.
-func (c *FakeTokens) Create(ctx context.Context, token *argovueiov1.Token, opts v1.CreateOptions) (result *argovueiov1.Token, err error) {
+func (c *FakeTokens) Create(token *argovueiov1.Token) (result *argovueiov1.Token, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewCreateAction(tokensResource, c.ns, token), &argovueiov1.Token{})
 
@@ -92,7 +90,7 @@ func (c *FakeTokens) Create(ctx context.Context, token *argovueiov1.Token, opts 
 }
 
 // Update takes the representation of a token and updates it. Returns the server's representation of the token, and an error, if there is any.
-func (c *FakeTokens) Update(ctx context.Context, token *argovueiov1.Token, opts v1.UpdateOptions) (result *argovueiov1.Token, err error) {
+func (c *FakeTokens) Update(token *argovueiov1.Token) (result *argovueiov1.Token, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateAction(tokensResource, c.ns, token), &argovueiov1.Token{})
 
@@ -103,7 +101,7 @@ func (c *FakeTokens) Update(ctx context.Context, token *argovueiov1.Token, opts 
 }
 
 // Delete takes name of the token and deletes it. Returns an error if one occurs.
-func (c *FakeTokens) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+func (c *FakeTokens) Delete(name string, options *v1.DeleteOptions) error {
 	_, err := c.Fake.
 		Invokes(testing.NewDeleteAction(tokensResource, c.ns, name), &argovueiov1.Token{})
 
@@ -111,15 +109,15 @@ func (c *FakeTokens) Delete(ctx context.Context, name string, opts v1.DeleteOpti
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *FakeTokens) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionAction(tokensResource, c.ns, listOpts)
+func (c *FakeTokens) DeleteCollection(options *v1.DeleteOptions, listOptions v1.ListOptions) error {
+	action := testing.NewDeleteCollectionAction(tokensResource, c.ns, listOptions)
 
 	_, err := c.Fake.Invokes(action, &argovueiov1.TokenList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched token.
-func (c *FakeTokens) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *argovueiov1.Token, err error) {
+func (c *FakeTokens) Patch(name string, pt types.PatchType, data []byte, subresources ...string) (result *argovueiov1.Token, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(tokensResource, c.ns, name, pt, data, subresources...), &argovueiov1.Token{})
 
