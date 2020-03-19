@@ -8,7 +8,18 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	v1 "k8s.io/api/core/v1"
 )
+
+func getOwner(svc *v1.Service, id string) (string, string) {
+	if _, ok := svc.Labels[constant.IdLabel]; ok {
+		return constant.IdLabel, id
+	}
+	if group, ok := svc.Labels[constant.GroupLabel]; ok {
+		return constant.GroupLabel, group
+	}
+	return constant.IdLabel, id
+}
 
 func (a *App) controlServiceIngresses(p *profile.Profile, w http.ResponseWriter, r *http.Request) *appError {
 	v := mux.Vars(r)
@@ -23,7 +34,8 @@ func (a *App) controlServiceIngresses(p *profile.Profile, w http.ResponseWriter,
 		if err != nil {
 			return makeStringError(err)
 		}
-		err = crd.CreateServiceIngress(svc, constant.IdLabel, p.Id,
+		label, owner := getOwner(svc, p.Id)
+		err = crd.CreateServiceIngress(svc, label, owner,
 			a.Args().Namespace(),
 			a.Args().Service(),
 			a.Args().TLSIssuer(),

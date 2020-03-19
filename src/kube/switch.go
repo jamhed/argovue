@@ -116,6 +116,23 @@ func GetIngress(name, namespace string) (*extsv1beta1.Ingress, error) {
 	return clientset.ExtensionsV1beta1().Ingresses(namespace).Get(name, metav1.GetOptions{})
 }
 
+func DeleteIngress(name, namespace string) error {
+	clientset, err := GetClient()
+	if err != nil {
+		return err
+	}
+	return clientset.ExtensionsV1beta1().Ingresses(namespace).Delete(name, &metav1.DeleteOptions{})
+}
+
+func GetIngressesByLabel(namespace, labelSelector string) (*extsv1beta1.IngressList, error) {
+	clientset, err := GetClient()
+	if err != nil {
+		return nil, err
+	}
+
+	return clientset.ExtensionsV1beta1().Ingresses(namespace).List(metav1.ListOptions{LabelSelector: labelSelector})
+}
+
 func GetDeployment(name, namespace string) (*appsv1.Deployment, error) {
 	clientset, err := GetClient()
 	if err != nil {

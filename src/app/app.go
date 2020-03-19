@@ -32,6 +32,7 @@ type App struct {
 	wg        sync.WaitGroup
 	brokers   BrokerMap
 	config    *crd.Crd
+	services  *crd.Crd
 	groups    map[string]string
 	subset    BrokerMap
 	events    chan *Event
@@ -73,6 +74,8 @@ func New() *App {
 		SetFieldSelector(fmt.Sprintf("metadata.namespace=%s,metadata.name=%s-config", a.Args().Namespace(), a.Args().Release())).
 		Watch()
 	go a.ListenForConfig()
+	a.services = crd.New("", "v1", "services").Watch()
+	go a.ListenForServices()
 	a.ver = make(map[string]interface{})
 	return a
 }

@@ -61,6 +61,12 @@ func New(id string) (broker *Broker) {
 	return
 }
 
+func (broker *Broker) NewClient() chan *msg.Msg {
+	messageChan := make(chan *msg.Msg)
+	broker.newClients <- messageChan
+	return messageChan
+}
+
 // Serve forwards events to HTTP client
 func (broker *Broker) Serve(w http.ResponseWriter, flusher http.Flusher) {
 	messageChan := make(chan *msg.Msg)
