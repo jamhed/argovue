@@ -3,7 +3,8 @@
 * Add health check
 * Garbage-collect ingresses (when a service is deleted)
 * Make ingresses group-owned
-* Add login log line for Splunk
+* Add login/auth log entry to ease stats
+* Cluster role
 
 * On connection break give it some time (10-15 seconds) before clean up
 * Better kube error/info handling on service create/delete (with rollback?)

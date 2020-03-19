@@ -12,6 +12,7 @@ import Front from '@/Front'
 import Objects from '@/Objects'
 import Datasets from '@/Datasets'
 import Pvcs from '@/Pvcs'
+import Services from '@/Services'
 import WorkflowObject from '@/Workflow/Object'
 import CatalogueObject from '@/Catalogue/Object'
 import CatalogueInstance from '@/Catalogue/Instance'
@@ -46,6 +47,7 @@ const router = new VueRouter({
     { path: '/profile', component: Profile },
     { path: '/watch/datasets', component: Datasets, props: routeProps },
     { path: '/watch/pvcs', component: Pvcs, props: routeProps },
+    { path: '/watch/services', component: Services, props: routeProps },
     { path: '/watch/:kind', component: Objects, props: routeProps },
     { path: '/workflows/:namespace/:name', component: WorkflowObject, props: routeProps },
     { path: '/k8s/job/:namespace/:name', component: JobObject, props: routeProps },

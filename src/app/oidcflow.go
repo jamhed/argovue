@@ -17,6 +17,13 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type BrokerDef struct {
+	Name     string
+	Group    string
+	Version  string
+	Resource string
+}
+
 func (a *App) onLogout(sessionId string) {
 	sessionData, ok := a.brokers[sessionId]
 	if !ok {
@@ -32,22 +39,22 @@ func (a *App) onLogout(sessionId string) {
 }
 
 func (a *App) onLogin(sessionId string, p *profile.Profile) {
-	wfBroker := a.newBroker(sessionId, "workflows")
-	catBroker := a.newBroker(sessionId, "catalogue")
-	datasetBroker := a.newBroker(sessionId, "datasets")
-	pvcBroker := a.newBroker(sessionId, "pvcs")
-	if len(p.EffectiveGroups) > 0 {
-		selector := fmt.Sprintf("%s in (%s)", constant.GroupLabel, strings.Join(p.EffectiveGroups, ","))
-		wfBroker.AddCrd(crd.New("argoproj.io", "v1alpha1", "workflows").SetLabelSelector(selector))
-		catBroker.AddCrd(crd.New("argovue.io", "v1", "services").SetLabelSelector(selector))
-		datasetBroker.AddCrd(crd.New("argovue.io", "v1", "datasets").SetLabelSelector(selector))
-		pvcBroker.AddCrd(crd.New("", "v1", "persistentvolumeclaims").SetLabelSelector(selector))
+	brokerDefs := []BrokerDef{
+		{"catalogue", "argovue.io", "v1", "services"},
+		{"datasets", "argovue.io", "v1", "datasets"},
+		{"pvcs", "", "v1", "persistentvolumeclaims"},
+		{"workflows", "argoproj.io", "v1alpha1", "workflows"},
+		{"services", "", "v1", "services"},
 	}
+	groupSelector := fmt.Sprintf("%s in (%s)", constant.GroupLabel, strings.Join(p.EffectiveGroups, ","))
 	selector := fmt.Sprintf("%s in (%s)", constant.IdLabel, p.IdLabel())
-	wfBroker.AddCrd(crd.New("argoproj.io", "v1alpha1", "workflows").SetLabelSelector(selector))
-	catBroker.AddCrd(crd.New("argovue.io", "v1", "services").SetLabelSelector(selector))
-	datasetBroker.AddCrd(crd.New("argovue.io", "v1", "datasets").SetLabelSelector(selector))
-	pvcBroker.AddCrd(crd.New("", "v1", "persistentvolumeclaims").SetLabelSelector(selector))
+	for _, def := range brokerDefs {
+		broker := a.newBroker(sessionId, def.Name)
+		if len(p.EffectiveGroups) > 0 {
+			broker.AddCrd(crd.New(def.Group, def.Version, def.Resource).SetLabelSelector(groupSelector))
+		}
+		broker.AddCrd(crd.New(def.Group, def.Version, def.Resource).SetLabelSelector(selector))
+	}
 }
 
 func (a *App) Logout(w http.ResponseWriter, r *http.Request) {
