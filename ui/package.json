@@ -14,7 +14,7 @@
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.4.3",
     "dagre": "^0.8.5",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jsoneditor": "^8.0.0",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
