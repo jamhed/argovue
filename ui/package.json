@@ -15,7 +15,7 @@
     "core-js": "^3.4.3",
     "dagre": "^0.8.5",
     "jquery": "^3.5.0",
-    "jsoneditor": "^8.0.0",
+    "jsoneditor": "^9.5.6",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "popper": "^1.0.1",
